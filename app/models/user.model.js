@@ -19,9 +19,9 @@ let User = new Schema({
 		type    : Boolean,
 		default : false,
 	},
-	role      : {
+	role       	 : {
 		type    : String,
-		default : 'user', // user, buyer, seller, broker, landlord, lender, tenant
+		default : 'admin', // user, buyer, seller, broker, landlord, lender, tenant
 	},
 
 	searchField: { type: String, index: true, select: false },
