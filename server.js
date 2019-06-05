@@ -6,7 +6,6 @@
   const http = require("http");
   const fs = require("fs");
   const cors = require("cors");
-  const mongoose = require("mongoose");
   const cookieParser = require("cookie-parser");
   const bodyParser = require("body-parser");
   const config = require("./config/config.js");
@@ -43,30 +42,9 @@
   );
   app.use("/assets", express.static("assets"));
 
-  const mainDB = mongoose.createConnection(config.db_main, {
-    useNewUrlParser: true
-  });
-  mainDB.on("error", function(err) {
-    if (err) {
-      console.log("MainDB");
-      console.log(err);
-    }
-  });
-  mainDB.once("open", function callback() {
-    console.info("CLIENT DB connected successfully");
-  });
-
-  module.exports = {
-    main: mainDB
-  };
-
   app.use(require("./app/middleware/jwt.middlerware").jwtCheck);
 
-  //default create admin
-  require("./app/routes/auth.route")(app);
-
-  //create role for user
-  require("./app/routes/role.route")(app);
+  require("./app/routes/xero.route")(app);
 
   app.use(require("./app/middleware/error.middleware").handleError);
 
