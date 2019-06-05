@@ -1,1 +1,1 @@
-# QueensBeans-API
+# Peasy API
