@@ -11,7 +11,8 @@
   module.exports = {
     auth,
     signup,
-    activation
+    activation,
+    login
   };
 
   // authorization by ID
@@ -85,10 +86,8 @@
 
   function activation(req, res) {
     let activationToken = req.body.activationToken;
-    console.log("activationToken", activationToken);
     return AuthService.jwtVerify(activationToken)
       .then(decodedToken => {
-        console.log("decodedToken", decodedToken);
         if (decodedToken.type === "activation") {
           return User.findOne({ id: decodedToken.id });
         } else {
@@ -104,14 +103,14 @@
             })
           );
         } else if (user.activationToken === activationToken) {
-          console.log("user11", user);
           User.findOne({ where: { id: user.dataValues.id } }).then(result => {
-            console.log("result", result);
-            return result
-              .update({ activationToken: null })
-              .then(resp => console.log("resp", resp));
+            return result.update({ activationToken: null }).then(newUser =>
+              res.status(200).send({
+                status: `User activated`,
+                user: newUser.dataValues
+              })
+            );
           });
-          // console.log("findUser", findUser);
         } else {
           throw new Error(
             JSON.stringify({
@@ -120,10 +119,42 @@
             })
           );
         }
-      })
-      .then(resp => {
-        res.status(200).send(console.log("resp", resp));
-      })
-      .catch(err => console.log("err", err));
+      });
+  }
+
+  async function login(req, res) {
+    let { email, password } = req.body;
+    console.log("req.body", req.body);
+    let user = await User.findOne({ where: { email } });
+    console.log("user", user);
+    if (!user) {
+      res.status(400).send({
+        type: `User doesn't exists`
+      });
+      throw new Error(
+        JSON.stringify({
+          status: 400,
+          type: `User doesn't exists`
+        })
+      );
+    }
+    user = await AuthService.comparePassword(password, user);
+    if (!user.activationToken) {
+      const result = await AuthService.jwtCreate(user);
+      res.status(200).send({
+        status: "User logs",
+        user: result
+      });
+    } else {
+      res.status(400).send({
+        type: `Not confirmed email`
+      });
+      throw new Error(
+        JSON.stringify({
+          status: 403,
+          type: `Not confirmed email`
+        })
+      );
+    }
   }
 })();

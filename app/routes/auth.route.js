@@ -8,6 +8,7 @@
   module.exports = function(app) {
     app.post("/signup", auth.signup);
     app.post("/auth/activation", auth.activation);
+    app.post("/auth/login", auth.login);
     // app.get('/auth', JWTAuthController.auth);
     // app.post('/auth/login/instagram', JWTAuthController.instaLogin);
     // app.post('/auth/login/facebook', JWTAuthController.facebookLogin);

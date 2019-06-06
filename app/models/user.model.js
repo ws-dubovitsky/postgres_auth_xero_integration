@@ -11,7 +11,7 @@
 
   function create(data) {
     return new Promise((resolve, reject) => {
-      User.sync({ force: true })
+      User.sync({ alter: true })
         .then(() => {
           const createUser = User.create(data);
           resolve(createUser);
@@ -29,14 +29,6 @@
         .catch(err => reject(err));
     });
   }
-
-  //   async function get() {
-  //     try {
-  //       await User.findAll();
-  //     } catch (err) {
-  //       console.log("err", err);
-  //     }
-  //   }
 
   // req.params.id
   async function getById(user_id) {
