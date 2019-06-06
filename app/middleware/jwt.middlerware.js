@@ -1,25 +1,28 @@
-(function () {
-	'use strict';
+(function() {
+  "use strict";
 
-	const Promise						= require('bluebird');
-	const AuthService				= require('../../services/auth.service');
+  //   const Promise = require("bluebird");
+  const AuthService = require("../services/auth.service");
 
-	exports.jwtCheck = function (req, res, next) {
-		if (req && req.headers && req.headers.authorization) {
-			AuthService.jwtVerify(req.headers.authorization)
-				.then(decodedToken => {
-					if (decodedToken.type === 'authorization') {
-						req.userId = decodedToken._id;
-					}
-					next();
-				})
-				.catch(error => {
-					console.log('error', error);
-					next();
-				});
-		} else {
-			req.userId = null;
-			next();
-		}
-	}
+  exports.jwtCheck = function(req, res) {
+    console.log("req.body", req.body);
+
+    console.log("req.headers.authorization", req.headers.authorization);
+    // console.log("req.headers", req.headers);
+
+    if (req && req.headers && req.headers.authorization) {
+      AuthService.jwtVerify(req.headers.authorization)
+        .then(decodedToken => {
+        //   console.log("decodedToken", decodedToken);
+          if (decodedToken.type === "authorization") {
+            req.userId = decodedToken._id;
+          }
+        })
+        .catch(error => {
+          console.log("error", error);
+        });
+    } else {
+      req.userId = null;
+    }
+  };
 })();

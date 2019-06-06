@@ -11,10 +11,10 @@
 
   function create(data) {
     return new Promise((resolve, reject) => {
-      User.sync({ alter: true })
+      User.sync({ force: true })
         .then(() => {
-          const createusr = User.create(data);
-          resolve(createusr);
+          const createUser = User.create(data);
+          resolve(createUser);
         })
         .catch(err => {
           reject(err);

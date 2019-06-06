@@ -14,6 +14,10 @@ const User = db.define("test", {
   },
   password: {
     type: Sequelize.STRING
+  },
+  activationToken: {
+    type: Sequelize.STRING,
+    defaultValue: "undefined"
   }
 });
 

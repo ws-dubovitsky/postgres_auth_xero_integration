@@ -7,6 +7,5 @@
     app.get("/", xero_service.link);
     app.get("/connect", xero_service.connect);
     app.get("/callback", xero_service.callback);
-
   };
 })();

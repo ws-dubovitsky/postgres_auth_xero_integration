@@ -7,7 +7,5 @@
   module.exports = async function(app) {
     app.get("/users", User.getUser);
     app.post("/create_user", User.createUser);
-    // app.get("/user", RoleController.createRole);
-    // app.get("/api/get_role", RoleController.getRole);
   };
 })();
