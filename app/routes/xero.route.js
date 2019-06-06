@@ -1,7 +1,7 @@
 (function() {
   "use strict";
 
-  const xero_service = require("../../services/xero.service");
+  const xero_service = require("../services/xero.service");
 
   module.exports = function(app) {
     app.get("/", xero_service.link);

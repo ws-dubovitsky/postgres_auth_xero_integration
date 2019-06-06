@@ -1,5 +1,5 @@
 const XeroClient = require("xero-node").AccountingAPIClient;
-const config = require("../config/xero.config.json");
+const config = require("../../config/xero.config.json");
 // const axios = require("axios");
 
 async function link(req, res) {
