@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const User = require("../../config/schema/user.schema");
+  const User = require("../../config/schema/index");
 
   module.exports = {
     create,

@@ -5,7 +5,10 @@
   const AuthService = require("../services/auth.service");
 
   exports.jwtCheck = function(req, res) {
-    console.log("req", req);
+    // console.log("req.body", req.body);
+    // console.log("req", req);
+    // console.log("req.userId", req.userId);
+    // console.log("req", req);
     // console.log("req.body", req.body);
 
     // console.log("req.headers.authorization", req.headers.authorization);
@@ -15,7 +18,7 @@
         .then(decodedToken => {
           console.log("decodedToken", decodedToken);
           if (decodedToken.type === "authorization") {
-            req.userId = decodedToken._id;
+            req.userId = decodedToken.id;
           }
         })
         .catch(error => {

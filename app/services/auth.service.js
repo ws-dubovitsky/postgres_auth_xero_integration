@@ -3,7 +3,7 @@
 
   const jwt = require("jsonwebtoken");
   const bcrypt = require("bcrypt-nodejs");
-  const config = require("../../config/config");
+  const config = require("../../config/config_env");
   const JWT_KEY = config.JWT_KEY;
 
   module.exports = {
@@ -14,12 +14,17 @@
   };
 
   function jwtCreate(user, params = {}, expiresIn = "1d") {
+    // console.log("user", user);
+    // console.log("req.body3333", req.body);
+
     let payload = {
-      _id: user._id,
+      id: user._id,
       //   super: user.super,
       ...params,
       type: params.type || "authorization"
     };
+
+    // console.log("payload", payload);
 
     return new Promise(function(resolve, reject) {
       jwt.sign(payload, JWT_KEY, { expiresIn }, function(err, token) {
@@ -41,6 +46,7 @@
   }
 
   function jwtVerify(token, key) {
+    console.log("token", token);
     return new Promise(function(resolve, reject) {
       jwt.verify(token, key || JWT_KEY, function(err, decoded) {
         if (err) {

@@ -1,5 +1,8 @@
 const XeroClient = require("xero-node").AccountingAPIClient;
 const config = require("../../config/xero.config.json");
+
+let requestToken;
+let xeroClient = new XeroClient(config);
 // const axios = require("axios");
 
 async function link(req, res) {
@@ -7,31 +10,41 @@ async function link(req, res) {
 }
 
 async function connect(req, res) {
-  let requestToken;
   // You can initialise Private apps directly from your configuration
-  let xero = new XeroClient(config);
+
   // Create request token and get an authorisation URL
-  requestToken = await xero.oauth1Client.getRequestToken();
+  requestToken = await xeroClient.oauth1Client.getRequestToken();
+  console.log("requestToken", requestToken);
   // const { oauth_token, oauth_token_secret } = requestToken;
-  let authUrl = xero.oauth1Client.buildAuthoriseUrl(requestToken);
-  res.redirect(authUrl);
+  let authoriseUrl = xeroClient.oauth1Client.buildAuthoriseUrl(requestToken);
+  console.log("authoriseUrl", authoriseUrl);
+  res.redirect(authoriseUrl);
 }
 
+//after
 async function callback(req, res) {
   try {
-    let oauth_verifier = req.body.oauth_verifier;
+    console.log("req.query", req.query);
+    let oauth_verifier = req.query.oauth_verifier;
     console.log("oauth_verifier", oauth_verifier);
-    let accessToken = await xero.oauth1Client.swapRequestTokenforAccessToken(
+    let accessToken = await xeroClient.oauth1Client.swapRequestTokenforAccessToken(
       requestToken,
       oauth_verifier
     );
+
     console.log("accessToken", accessToken);
-    let org = await xero.organisation.get();
+    let org = await xeroClient.organisations.get();
+
+    // let invoices = await xeroClient.invoices.get();
+    // console.log("invoices", invoices);
+
+    // let lastInvoiceNumber = invoices.Invoices[0].InvoiceNumber;
     console.log("org", org);
-    res.status(200).send(org);
+    // console.log("lastInvoiceNumber", lastInvoiceNumber);
+    res.send(org);
   } catch (err) {
     console.log("err", err);
-    res.status(400).send(err);
+    res.send(err);
   }
 }
 

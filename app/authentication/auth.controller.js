@@ -16,6 +16,7 @@
   };
 
   // authorization by ID
+
   async function auth(req, res) {
     try {
       const user = await User.getById(req.user_id);
@@ -48,6 +49,7 @@
         };
         user = await UserModel.create(userToCreate);
         //generate activation token
+        // console.log("user", user);
         const jwtCreate = await AuthService.jwtCreate(user, {
           type: "activation"
         }); // activation

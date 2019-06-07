@@ -1,7 +1,7 @@
 (function() {
   "use strict";
 
-  const db = require("../../config/database");
+  // const db = require("../../config/database");
   const User = require("../controllers/user.controller");
 
   module.exports = async function(app) {

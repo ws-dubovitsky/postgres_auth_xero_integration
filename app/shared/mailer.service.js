@@ -2,7 +2,7 @@
   "use strict";
 
   const Promise = require("bluebird");
-  const config = require("../../config/config");
+  const config = require("../../config/config_env");
   const nodemailer = require("nodemailer");
 
   const emailAuthor = config.EMAIL_SERVICE_LOGIN;
